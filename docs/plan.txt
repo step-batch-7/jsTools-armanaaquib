@@ -1,0 +1,71 @@
+Available Commands:
+1. node sort.js file
+3. node sort.js
+3. node sort.js file1 file2 file3 ...
+
+4. node sort.js -n file
+5. node sort.js -n
+6. node sort.js -n file1 file2 file3 ...
+
+7. node sort.js -r file
+8. node sort.js -r
+9. node sort.js -r file1 file2 file3 ...
+
+10. node sort.js -r -n file
+11. node sort.js -r -n
+12. node sort.js -r -n file1 file2 file3 ...
+
+
+Flow:
+1.1 get sorted lines
+output => list: sorted lines
+input => list: lines
+name => getSortedLines
+
+1.2 make lines from content
+output => list: lines
+input => text: file content
+name => 
+
+2.1.1 join content of files
+output => text: merged content
+input => list: file contents
+name =>
+
+2.1.2 if file exist get content of a file
+output => text: file content
+input => text: file name
+name => readFile
+
+2.2 if file does not exists
+output => error: sort: sort: No such file or directory
+input => boolean: true/false
+name => throwErrorIfFileDoesNotExist
+
+2.3. if file is given check file exists
+output => boolean: true/false
+input => file name
+name => exists
+
+3.1 if stdin ends
+output => text: content
+input => event called
+name => stdinEnds
+
+3.2 if file is not given start stdin
+output => stdin: starts
+input => nothing
+name => startStdin
+
+4.1 check options
+output => boolean: true/false
+input => list: command line inputs
+name => areOptionsGiven
+
+10. node sort.js -f file
+11. node sort.js -f
+12. node sort.js -f file1 file2 file3 ...
+
+16. node sort.js -r -f file
+17. node sort.js -r -f
+18. node sort.js -r -f file1 file2 file3 ...

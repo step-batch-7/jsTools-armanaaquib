@@ -1,0 +1,25 @@
+{
+    "name": "jstools-armanaaquib",
+    "version": "1.0.0",
+    "description": "",
+    "main": "sort.js",
+    "directories": {
+        "doc": "docs"
+    },
+    "scripts": {
+        "test": "mocha"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/step-batch-7/jsTools-armanaaquib.git"
+    },
+    "devDependencies": {
+        "mocha": "6.2.2"
+    },
+    "author": "Aaquib Equbal",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/step-batch-7/jsTools-armanaaquib/issues"
+    },
+    "homepage": "https://github.com/step-batch-7/jsTools-armanaaquib#readme"
+}
