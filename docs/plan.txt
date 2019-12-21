@@ -1,3 +1,70 @@
+Available Commands for Version 01
+1. node sort.js file
+
+Expected Outputs:
+1. sorted lines of file
+2. error file not found
+
+file=> sort_v01.txt
+arman
+node
+aaquib
+12sad
+lsd
+
+command=>
+node sort.js sort_v01.txt
+
+output=>
+12sad
+aaquib
+arman
+lsd
+node
+
+Flow for Version 01
+
+1.1 if file does not exists
+output => error: sort: sort: No such file or directory
+input => boolean: true/false
+name => throwErrorIfFileDoesNotExist
+
+1.2.1 if file exist get content of a file
+output => text: file content
+input => text: file name
+name => readFile
+
+1.2.2 make lines from content
+output => list: lines
+input => text: file content
+name => 
+
+1.2.2 get sorted lines
+output => list: sorted lines
+input => list: lines
+name => getSortedLines
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Available Commands:
 1. node sort.js file
 3. node sort.js
@@ -15,6 +82,13 @@ Available Commands:
 11. node sort.js -r -n
 12. node sort.js -r -n file1 file2 file3 ...
 
+13. node sort.js -f file
+14. node sort.js -f
+15. node sort.js -f file1 file2 file3 ...
+
+16. node sort.js -r -f file
+17. node sort.js -r -f
+18. node sort.js -r -f file1 file2 file3 ...
 
 Flow:
 1.1 get sorted lines
@@ -62,10 +136,3 @@ output => boolean: true/false
 input => list: command line inputs
 name => areOptionsGiven
 
-10. node sort.js -f file
-11. node sort.js -f
-12. node sort.js -f file1 file2 file3 ...
-
-16. node sort.js -r -f file
-17. node sort.js -r -f
-18. node sort.js -r -f file1 file2 file3 ...

@@ -1,0 +1,24 @@
+Version 01
+will work for single file
+
+Available Commands for Version 01
+1. node sort.js file
+
+Expected Outputs:
+1. sorted lines of file
+2. error file not found
+
+to create:
+will make sort.js file
+will make src directory
+will make test directory
+will make appTests directory
+
+to do:
+npm init ---will create package.json
+will add mocha in devDependencies
+npm install
+will add node_modules in .gitignore
+will create functions according to plan
+
+
