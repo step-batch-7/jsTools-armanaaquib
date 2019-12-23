@@ -1,0 +1,8 @@
+ThoughtWorks is a privately owned, global technology company 
+with 
+42 offices in 15 countries. 
+It provides software design and delivery
+, and tools and consulting services.
+ The company is closely associated with the movement
+for agile software development, and has contributed to 
+a range of open source products.

@@ -12,8 +12,7 @@ aaquib
 12sad
 lsd
 
-command=>
-node sort.js sort_v01.txt
+command=> node sort.js sort_v01.txt
 
 output=>
 12sad
@@ -44,51 +43,6 @@ output => list: sorted lines
 input => list: lines
 name => getSortedLines
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Available Commands:
-1. node sort.js file
-3. node sort.js
-3. node sort.js file1 file2 file3 ...
-
-4. node sort.js -n file
-5. node sort.js -n
-6. node sort.js -n file1 file2 file3 ...
-
-7. node sort.js -r file
-8. node sort.js -r
-9. node sort.js -r file1 file2 file3 ...
-
-10. node sort.js -r -n file
-11. node sort.js -r -n
-12. node sort.js -r -n file1 file2 file3 ...
-
-13. node sort.js -f file
-14. node sort.js -f
-15. node sort.js -f file1 file2 file3 ...
-
-16. node sort.js -r -f file
-17. node sort.js -r -f
-18. node sort.js -r -f file1 file2 file3 ...
 
 Flow:
 1.1 get sorted lines
@@ -135,4 +89,3 @@ name => startStdin
 output => boolean: true/false
 input => list: command line inputs
 name => areOptionsGiven
-

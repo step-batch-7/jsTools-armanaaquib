@@ -1,0 +1,16 @@
+Available Commands:
+1. node sort.js file
+3. node sort.js
+3. node sort.js file1 file2 file3 ...
+
+4. node sort.js -n file
+5. node sort.js -n
+6. node sort.js -n file1 file2 file3 ...
+
+7. node sort.js -r file
+8. node sort.js -r
+9. node sort.js -r file1 file2 file3 ...
+
+10. node sort.js -r -n file
+11. node sort.js -r -n
+12. node sort.js -r -n file1 file2 file3 ...
