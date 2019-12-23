@@ -1,4 +1,3 @@
-const fs = require("fs");
 const getSortedLines = require("./getSortedLines");
 
 const getSortedContent = function(file, requiredProperties) {
@@ -11,19 +10,17 @@ const getSortedContent = function(file, requiredProperties) {
     return getSortedLines(fileLines).join("\n");
 };
 
-const getSortedContentAndWriteType = function(userInputs, requiredProperties) {
+const getPrintableString = function(userInputs, requiredProperties) {
     const file = userInputs[0];
 
     const doesExist = requiredProperties.doesExist;
-    const showError = requiredProperties.showError;
     if (!doesExist(file)) {
-        const errorMessage = "sort: No such file or directory";
-        return { type: requiredProperties.showError, printableString: errorMessage };
+        return (errorMessage = "sort: No such file or directory");
     }
 
     const sortedContent = getSortedContent(file, requiredProperties);
 
-    return { type: requiredProperties.showContent, printableString: sortedContent };
+    return getSortedContent(file, requiredProperties);
 };
 
-module.exports = getSortedContentAndWriteType;
+module.exports = getPrintableString;

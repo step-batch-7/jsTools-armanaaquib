@@ -1,5 +1,6 @@
 const fs = require("fs");
-const getSortedContentAndWriteType = require("./src/getSortedContentAndWriteType.js");
+const getPrintableString = require("./src/getPrintableString");
+const getWriter = require("./src/getWriter");
 
 const sort = function() {
     const requiredProperties = {
@@ -11,9 +12,11 @@ const sort = function() {
     };
 
     const userInputs = process.argv.slice(2);
-    const write = getSortedContentAndWriteType(userInputs, requiredProperties);
 
-    write.type(write.printableString);
+    const printableString = getPrintableString(userInputs, requiredProperties);
+    const writer = getWriter(userInputs, requiredProperties);
+
+    writer(printableString);
 };
 
 sort();

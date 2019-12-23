@@ -1,7 +1,8 @@
-const getWriteType = function(requiredProperties, file) {
+const getWriter = function(userInputs, requiredProperties) {
     const doesExist = requiredProperties.doesExist;
     const showContent = requiredProperties.showContent;
     const showError = requiredProperties.showError;
+    const file = userInputs[0];
 
     if (doesExist(file)) {
         return showContent;
@@ -10,4 +11,4 @@ const getWriteType = function(requiredProperties, file) {
     return showError;
 };
 
-module.exports = getWriteType;
+module.exports = getWriter;

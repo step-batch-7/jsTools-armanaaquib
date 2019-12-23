@@ -1,8 +1,8 @@
 const fs = require("fs");
 const assert = require("chai").assert;
-const getSortedContentAndWriteType = require("../src/getSortedContentAndWriteType");
+const getPrintableString = require("../src/getPrintableString");
 
-describe("#getSortedContentAndWriteType()", function() {
+describe("#getPrintableString()", function() {
     it("should return console.error functions and error message if files is not found", function() {
         const doesExist = function(file) {
             assert.notStrictEqual(file, "fileName");
@@ -17,9 +17,9 @@ describe("#getSortedContentAndWriteType()", function() {
             showContent: console.log
         };
 
-        const expectedValue = { type: console.error, printableString: "sort: No such file or directory" };
+        const expectedValue = "sort: No such file or directory";
 
-        assert.deepStrictEqual(getSortedContentAndWriteType(["worongFile"], requiredProperties), expectedValue);
+        assert.deepStrictEqual(getPrintableString(["worongFile"], requiredProperties), expectedValue);
     });
 
     it("should return console.log functions and sorted Content if files is found", function() {
@@ -43,9 +43,8 @@ describe("#getSortedContentAndWriteType()", function() {
             showContent: console.log
         };
 
-        const sortedContent = " zds\n12\naaquib\nl hellow h\nzahid khan";
-        const expectedValue = { type: console.log, printableString: sortedContent };
+        const expectedValue = " zds\n12\naaquib\nl hellow h\nzahid khan";
 
-        assert.deepStrictEqual(getSortedContentAndWriteType(["fileName"], requiredProperties), expectedValue);
+        assert.deepStrictEqual(getPrintableString(["fileName"], requiredProperties), expectedValue);
     });
 });

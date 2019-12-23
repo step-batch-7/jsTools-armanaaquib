@@ -1,5 +1,5 @@
 const assert = require("assert");
-const getWriteType = require("../src/getWriteType");
+const getWriter = require("../src/getWriter");
 
 describe("#getWriteType", function() {
     it("should return console.log if file is found", function() {
@@ -23,7 +23,7 @@ describe("#getWriteType", function() {
             showContent: console.log
         };
 
-        assert.strictEqual(getWriteType(requiredProperties, "fileName"), console.log);
+        assert.strictEqual(getWriter(["fileName"], requiredProperties), console.log);
     });
 
     it("should return console.error if file is found", function() {
@@ -46,6 +46,6 @@ describe("#getWriteType", function() {
             showContent: console.log
         };
 
-        assert.strictEqual(getWriteType(requiredProperties, "fileName"), console.error);
+        assert.strictEqual(getWriter(["fileName"], requiredProperties), console.error);
     });
 });
