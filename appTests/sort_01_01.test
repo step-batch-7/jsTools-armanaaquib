@@ -1,4 +1,4 @@
-node sort.js sample_sort_01.txt
+node sort.js ./appTests/sample_sort_01_01.txt
  The company is closely associated with the movement
 , and tools and consulting services.
 42 offices in 15 countries.
