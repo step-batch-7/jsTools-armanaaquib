@@ -1,18 +1,18 @@
-const getStreamType = function(userInputs, requiredProperties) {
-    const doesExist = requiredProperties.doesExist;
-    const showContent = requiredProperties.showContent;
-    const showError = requiredProperties.showError;
-    const file = userInputs[0];
-
-    if (doesExist(file)) {
-        return "outputStream";
-    }
-
-    return "errorStream";
-};
-
 const getSortedLines = function(lines) {
     return lines.sort();
 };
 
-module.exports = { getStreamType, getSortedLines };
+const showSortedContent = function(error, content) {
+    const lines = content.split("\n");
+    const sortedLines = getSortedLines(lines);
+    const sortedContent = sortedLines.join("\n");
+    this.outputStream(sortedContent);
+};
+
+const applyFileSorting = function(file, requiredProperties) {
+    const { reader, encodingType, outputStream, showSortedContent } = requiredProperties;
+
+    reader(file, encodingType, showSortedContent.bind({ outputStream }));
+};
+
+module.exports = { applyFileSorting, getSortedLines, showSortedContent };
