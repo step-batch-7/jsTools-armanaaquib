@@ -1,4 +1,4 @@
-const getSortedLines = require("./getSortedLines");
+const { getSortedLines } = require("./sortLib");
 
 const getSortedContent = function(file, requiredProperties) {
     const reader = requiredProperties.reader;

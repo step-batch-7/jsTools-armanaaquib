@@ -11,4 +11,8 @@ const getWriter = function(userInputs, requiredProperties) {
     return showError;
 };
 
-module.exports = getWriter;
+const getSortedLines = function(lines) {
+    return lines.sort();
+};
+
+module.exports = { getWriter, getSortedLines };

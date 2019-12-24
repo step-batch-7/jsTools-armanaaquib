@@ -1,5 +1,5 @@
 const assert = require("assert");
-const getWriter = require("../src/getWriter");
+const { getWriter, getSortedLines } = require("../src/sortLib");
 
 describe("#getWriteType", function() {
     it("should return console.log if file is found", function() {
@@ -47,5 +47,14 @@ describe("#getWriteType", function() {
         };
 
         assert.strictEqual(getWriter(["fileName"], requiredProperties), console.error);
+    });
+});
+
+describe("#getSortedLines()", function() {
+    it("should return sorted lines", function() {
+        const lines = ["l hellow h", "aaquib", "12", "zahid khan", " zds"];
+        const sortedLines = [" zds", "12", "aaquib", "l hellow h", "zahid khan"];
+
+        assert.deepStrictEqual(getSortedLines(lines), sortedLines);
     });
 });
