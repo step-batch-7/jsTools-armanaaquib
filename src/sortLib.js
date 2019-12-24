@@ -1,18 +1,18 @@
-const getWriter = function(userInputs, requiredProperties) {
+const getStreamType = function(userInputs, requiredProperties) {
     const doesExist = requiredProperties.doesExist;
     const showContent = requiredProperties.showContent;
     const showError = requiredProperties.showError;
     const file = userInputs[0];
 
     if (doesExist(file)) {
-        return showContent;
+        return "outputStream";
     }
 
-    return showError;
+    return "errorStream";
 };
 
 const getSortedLines = function(lines) {
     return lines.sort();
 };
 
-module.exports = { getWriter, getSortedLines };
+module.exports = { getStreamType, getSortedLines };

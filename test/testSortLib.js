@@ -1,8 +1,8 @@
 const assert = require("assert");
-const { getWriter, getSortedLines } = require("../src/sortLib");
+const { getStreamType, getSortedLines } = require("../src/sortLib");
 
 describe("#getWriteType", function() {
-    it("should return console.log if file is found", function() {
+    it("should return outputStream if file is found", function() {
         const doesExist = function(file) {
             assert.strictEqual(file, "fileName");
             return true;
@@ -18,15 +18,13 @@ describe("#getWriteType", function() {
         const requiredProperties = {
             doesExist: doesExist,
             reader: reader,
-            encodingType: "utf-8",
-            showError: console.error,
-            showContent: console.log
+            encodingType: "utf-8"
         };
 
-        assert.strictEqual(getWriter(["fileName"], requiredProperties), console.log);
+        assert.strictEqual(getStreamType(["fileName"], requiredProperties), "outputStream");
     });
 
-    it("should return console.error if file is found", function() {
+    it("should return errorStream if file is found", function() {
         const doesExist = function(file) {
             return false;
         };
@@ -41,12 +39,10 @@ describe("#getWriteType", function() {
         const requiredProperties = {
             doesExist: doesExist,
             reader: reader,
-            encodingType: "utf-8",
-            showError: console.error,
-            showContent: console.log
+            encodingType: "utf-8"
         };
 
-        assert.strictEqual(getWriter(["fileName"], requiredProperties), console.error);
+        assert.strictEqual(getStreamType(["fileName"], requiredProperties), "errorStream");
     });
 });
 
