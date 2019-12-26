@@ -1,50 +1,40 @@
 const assert = require("chai").assert;
-const { applyFileSorting, getSortedLines, showSortedContent } = require("../src/sortLib");
+const { sort } = require("../src/sortLib");
 
-describe("#getSortedLines()", function() {
-    it("should return sorted lines", function() {
-        const lines = ["l hellow h", "aaquib", "12", "zahid khan", " zds"];
-        const sortedLines = [" zds", "12", "aaquib", "l hellow h", "zahid khan"];
-
-        assert.deepStrictEqual(getSortedLines(lines), sortedLines);
-    });
-});
-
-describe("#showSortedContent()", function() {
-    it("should show sorted content to output stream", function() {
-        const content = "l hellow h\naaquib\n12\nzahid khan\n zds";
-        const expectedSortedContent = " zds\n12\naaquib\nl hellow h\nzahid khan";
-
-        const outputStream = function(sortedContent) {
-            assert.strictEqual(sortedContent, expectedSortedContent);
-        };
-
-        showSortedContent.call({ outputStream }, "never error", content);
-    });
-});
-
-describe("#applyFileSorting()", function() {
-    it("should passed correct arguments and should show sorted content", function() {
-        const outputStream = () => {};
-        const showSortedContent = function(error, content) {
-            assert.strictEqual(content, "content");
-            assert.strictEqual(this.outputStream, outputStream);
+describe("#sort()", function() {
+    it("should give error message if error code for file not available given", function() {
+        const show = function(sortOutput) {
+            assert.strictEqual(sortOutput.sortedContent, undefined);
+            assert.strictEqual(sortOutput.errorMessage, "sort: No such file or directory");
         };
 
         const reader = function(file, encodingType, callBack) {
             assert.strictEqual(file, "fileName");
             assert.strictEqual(encodingType, "utf-8");
-            callBack("never error", "content");
+            callBack({ code: "ENOENT" }, undefined);
         };
 
-        const requiredProperties = {
-            doesExist: () => {},
-            reader,
-            encodingType: "utf-8",
-            outputStream,
-            errorStream: () => {},
-            showSortedContent
+        const userInputs = ["fileName"];
+
+        sort(userInputs, { readFile: reader }, show);
+    });
+
+    it("should give sorted content if content is given", function() {
+        const content = "l hellow h\naaquib\n12\nzahid khan\n zds";
+        const expectedSortedContent = " zds\n12\naaquib\nl hellow h\nzahid khan";
+
+        const show = function(sortOutput) {
+            assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
+            assert.strictEqual(sortOutput.errorMessage, undefined);
         };
-        applyFileSorting("fileName", requiredProperties);
+
+        const reader = function(file, encodingType, callBack) {
+            assert.strictEqual(file, "fileName");
+            assert.strictEqual(encodingType, "utf-8");
+            callBack(undefined, content);
+        };
+
+        const userInputs = ["fileName"];
+        sort(userInputs, { readFile: reader }, show);
     });
 });

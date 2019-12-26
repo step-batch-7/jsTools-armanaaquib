@@ -1,0 +1,2 @@
+mkdir sample_sort_01_04; node sort.js sample_sort_01_04; rmdir sample_sort_01_04
+sort: Is a directory

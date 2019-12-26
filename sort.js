@@ -1,20 +1,15 @@
 const fs = require("fs");
-const applySorting = require("./src/applySorting");
-const { showSortedContent } = require("./src/sortLib");
+const { sort } = require("./src/sortLib");
 
-const requiredProperties = {
-    doesExist: fs.existsSync,
-    reader: fs.readFile,
-    encodingType: "utf-8",
-    outputStream: console.log,
-    errorStream: console.error,
-    showSortedContent
+const show = function(sortOutput) {
+    sortOutput.sortedContent && console.log(sortOutput.sortedContent);
+    sortOutput.errorMessage && console.error(sortOutput.errorMessage);
 };
 
 const main = function() {
     const userInputs = process.argv.slice(2);
 
-    applySorting(userInputs, requiredProperties);
+    sort(userInputs, fs, show);
 };
 
 main();

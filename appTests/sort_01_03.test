@@ -1,0 +1,2 @@
+touch sample_sort_01_03.txt; chmod -r sample_sort_01_03.txt; node sort.js sample_sort_01_03.txt; rm sample_sort_01_03.txt
+sort: Permission denied
