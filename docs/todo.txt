@@ -21,4 +21,12 @@ npm install
 will add node_modules in .gitignore
 will create functions according to plan
 
+Version 02
+will edit parseSortOptions
+    check if file is given or not
+will create a function applyStdinSorting
+at end of stdin will call getSortedContent
+then will show sortedContent/error to stream
+
+
 
