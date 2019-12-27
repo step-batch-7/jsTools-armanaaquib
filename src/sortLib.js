@@ -16,17 +16,19 @@ const errors = {
 
 const onCompletion = function(error, content) {
     if (error) {
-        const errorMessage = errors[error.code];
-        this.show({ sortedContent: undefined, errorMessage });
+        let errorMessage = errors[error.code];
+        if (!errorMessage) errorMessage = "sort: file access got fail";
+
+        this.show({ errorMessage });
+        return;
     }
-    if (content) {
-        const sortedContent = getSortedContent(content);
-        this.show({ sortedContent, errorMessage: undefined });
-    }
+
+    const sortedContent = getSortedContent(content);
+    this.show({ sortedContent });
 };
 
-const applyFileSorting = function(sortingDetails, reader, show) {
-    const { file } = sortingDetails;
+const applyFileSorting = function(options, reader, show) {
+    const { file } = options;
     reader(file, "utf-8", onCompletion.bind({ show }));
 };
 
@@ -35,10 +37,10 @@ const parseSortProperties = function(userInputs) {
 };
 
 const sort = function(userInputs, fs, show) {
-    const sortingDetails = parseSortProperties(userInputs);
+    const options = parseSortProperties(userInputs);
     const reader = fs.readFile;
 
-    applyFileSorting(sortingDetails, reader, show);
+    applyFileSorting(options, reader, show);
 };
 
 module.exports = { sort };

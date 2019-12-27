@@ -8,11 +8,12 @@
     },
     "scripts": {
         "test": "mocha",
-        "allTests": "mocha; zsh runAppTests.sh appTests/*.test"
+        "allTests": "nyc mocha; zsh runAppTests.sh appTests/*.test"
     },
     "devDependencies": {
         "mocha": "6.2.2",
-        "chai": "4.2.0"
+        "chai": "4.2.0",
+        "nyc": "14.1.1"
     },
     "repository": {
         "type": "git",
