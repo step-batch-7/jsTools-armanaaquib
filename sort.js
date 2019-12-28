@@ -9,7 +9,7 @@ const show = function(sortOutput) {
 const main = function() {
     const userInputs = process.argv.slice(2);
 
-    sort(userInputs, fs, show);
+    sort(userInputs, fs, process.stdin, show);
 };
 
 main();

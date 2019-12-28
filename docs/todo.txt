@@ -28,5 +28,15 @@ will create a function applyStdinSorting
 at end of stdin will call getSortedContent
 then will show sortedContent/error to stream
 
+testing
+will mock event
+will emit event to test
+
+app testing
+will add app tests for pipe
+will add app tests for direction in
+
+
+
 
 

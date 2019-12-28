@@ -32,15 +32,36 @@ const applyFileSorting = function(options, reader, show) {
     reader(file, "utf-8", onCompletion.bind({ show }));
 };
 
+const applyStdInSorting = function(stdin, show) {
+    let content = "";
+    stdin.on("data", chunk => {
+        content += chunk;
+    });
+
+    stdin.on("end", () => {
+        const sortedContent = getSortedContent(content);
+        show({ sortedContent });
+    });
+};
+
 const parseSortProperties = function(userInputs) {
+    if (userInputs.length === 0) {
+        return { file: undefined };
+    }
+
     return { file: userInputs[0] };
 };
 
-const sort = function(userInputs, fs, show) {
+const sort = function(userInputs, fs, stdin, show) {
     const options = parseSortProperties(userInputs);
-    const reader = fs.readFile;
 
-    applyFileSorting(options, reader, show);
+    if (options.file) {
+        const reader = fs.readFile;
+        applyFileSorting(options, reader, show);
+        return;
+    }
+
+    applyStdInSorting(stdin, show);
 };
 
 module.exports = { sort };
