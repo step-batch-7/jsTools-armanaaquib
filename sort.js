@@ -1,15 +1,18 @@
-const fs = require("fs");
-const { sort } = require("./src/sortLib");
+const fs = require('fs');
+const { sort } = require('./src/sortLib');
 
-const show = function(sortOutput) {
-    sortOutput.sortedContent && console.log(sortOutput.sortedContent);
-    sortOutput.errorMessage && console.error(sortOutput.errorMessage);
+const show = function (sortOutput) {
+  sortOutput.sortedContent &&
+    process.stdout.write(sortOutput.sortedContent + '\n');
+  sortOutput.errorMessage &&
+    process.stderr.write(sortOutput.errorMessage + '\n');
 };
 
-const main = function() {
-    const userInputs = process.argv.slice(2);
+const main = function () {
+  const usrArgStartIndex = 2;
+  const userInputs = process.argv.slice(usrArgStartIndex);
 
-    sort(userInputs, fs, process.stdin, show);
+  sort(userInputs, fs, process.stdin, show);
 };
 
 main();

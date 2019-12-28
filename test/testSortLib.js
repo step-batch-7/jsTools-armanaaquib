@@ -1,126 +1,135 @@
-const assert = require("chai").assert;
-const { sort } = require("../src/sortLib");
-const EventEmitter = require("events");
+const assert = require('chai').assert;
+const { sort } = require('../src/sortLib');
+const EventEmitter = require('events');
 
-describe("#sort()", function() {
-    it("should give error message if given error code for file not available", function() {
-        let showCalledCount = 0;
-        let readerCalledCount = 0;
+describe('#sort()', function () {
+  const calledCount = 1;
+  const testMessage =
+    'should give error message if given error code for file not available';
 
-        const show = function(sortOutput) {
-            assert.strictEqual(sortOutput.sortedContent, undefined);
-            assert.strictEqual(sortOutput.errorMessage, "sort: No such file or directory");
-            showCalledCount += 1;
-        };
+  it(testMessage, function () {
+    let showCalledCount = 0;
+    let readerCalledCount = 0;
 
-        const reader = function(file, encodingType, callBack) {
-            assert.strictEqual(file, "fileName");
-            assert.strictEqual(encodingType, "utf-8");
-            callBack({ code: "ENOENT" }, undefined);
-            readerCalledCount += 1;
-        };
+    const show = function (sortOutput) {
+      assert.strictEqual(sortOutput.sortedContent, undefined);
+      assert.strictEqual(
+        sortOutput.errorMessage,
+        'sort: No such file or directory'
+      );
+      showCalledCount++;
+    };
 
-        const userInputs = ["fileName"];
+    const reader = function (file, encodingType, callBack) {
+      assert.strictEqual(file, 'fileName');
+      assert.strictEqual(encodingType, 'utf-8');
+      callBack({ code: 'ENOENT' }, undefined);
+      readerCalledCount++;
+    };
 
-        sort(userInputs, { readFile: reader }, undefined, show);
+    const userInputs = ['fileName'];
 
-        assert.strictEqual(readerCalledCount, 1);
-        assert.strictEqual(showCalledCount, 1);
-    });
+    sort(userInputs, { readFile: reader }, undefined, show);
 
-    it("should give error message if random error code is given", function() {
-        let showCalledCount = 0;
-        let readerCalledCount = 0;
+    assert.strictEqual(readerCalledCount, calledCount);
+    assert.strictEqual(showCalledCount, calledCount);
+  });
 
-        const show = function(sortOutput) {
-            assert.strictEqual(sortOutput.sortedContent, undefined);
-            assert.strictEqual(sortOutput.errorMessage, "sort: file access got fail");
-            showCalledCount += 1;
-        };
+  it('should give error message if random error code is given', function () {
+    let showCalledCount = 0;
+    let readerCalledCount = 0;
 
-        const reader = function(file, encodingType, callBack) {
-            assert.strictEqual(file, "fileName");
-            assert.strictEqual(encodingType, "utf-8");
-            callBack({ code: "randomError" }, undefined);
-            readerCalledCount += 1;
-        };
+    const show = function (sortOutput) {
+      assert.strictEqual(sortOutput.sortedContent, undefined);
+      assert.strictEqual(sortOutput.errorMessage, 'sort: file access got fail');
+      showCalledCount++;
+    };
 
-        const userInputs = ["fileName"];
-        sort(userInputs, { readFile: reader }, undefined, show);
+    const reader = function (file, encodingType, callBack) {
+      assert.strictEqual(file, 'fileName');
+      assert.strictEqual(encodingType, 'utf-8');
+      callBack({ code: 'randomError' }, undefined);
+      readerCalledCount++;
+    };
 
-        assert.strictEqual(readerCalledCount, 1);
-        assert.strictEqual(showCalledCount, 1);
-    });
+    const userInputs = ['fileName'];
+    sort(userInputs, { readFile: reader }, undefined, show);
 
-    it("should give sorted content if content is given", function() {
-        let showCalledCount = 0;
-        let readerCalledCount = 0;
-        const content = "lvaiju hellow h\naaquib\n12\nzahid khan\n zd";
-        const expectedSortedContent = " zd\n12\naaquib\nlvaiju hellow h\nzahid khan";
+    assert.strictEqual(readerCalledCount, calledCount);
+    assert.strictEqual(showCalledCount, calledCount);
+  });
 
-        const show = function(sortOutput) {
-            assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
-            assert.strictEqual(sortOutput.errorMessage, undefined);
-            showCalledCount += 1;
-        };
+  it('should give sorted content if content is given', function () {
+    let showCalledCount = 0;
+    let readerCalledCount = 0;
+    const content = 'lvaiju hellow h\naaquib\n12\nzahid khan\n zd';
+    const expectedSortedContent =
+      ' zd\n12\naaquib\nlvaiju hellow h\nzahid khan';
 
-        const reader = function(file, encodingType, callBack) {
-            assert.strictEqual(file, "fileName");
-            assert.strictEqual(encodingType, "utf-8");
-            callBack(undefined, content);
-            readerCalledCount += 1;
-        };
+    const show = function (sortOutput) {
+      assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
+      assert.strictEqual(sortOutput.errorMessage, undefined);
+      showCalledCount++;
+    };
 
-        const userInputs = ["fileName"];
-        sort(userInputs, { readFile: reader }, undefined, show);
+    const reader = function (file, encodingType, callBack) {
+      assert.strictEqual(file, 'fileName');
+      assert.strictEqual(encodingType, 'utf-8');
+      callBack(undefined, content);
+      readerCalledCount++;
+    };
 
-        assert.strictEqual(readerCalledCount, 1);
-        assert.strictEqual(showCalledCount, 1);
-    });
+    const userInputs = ['fileName'];
+    sort(userInputs, { readFile: reader }, undefined, show);
 
-    it("should give empty if content is empty", function() {
-        let showCalledCount = 0;
-        let readerCalledCount = 0;
-        const content = "";
-        const expectedSortedContent = "";
+    assert.strictEqual(readerCalledCount, calledCount);
+    assert.strictEqual(showCalledCount, calledCount);
+  });
 
-        const show = function(sortOutput) {
-            assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
-            assert.strictEqual(sortOutput.errorMessage, undefined);
-            showCalledCount += 1;
-        };
+  it('should give empty if content is empty', function () {
+    let showCalledCount = 0;
+    let readerCalledCount = 0;
+    const content = '';
+    const expectedSortedContent = '';
 
-        const reader = function(file, encodingType, callBack) {
-            assert.strictEqual(file, "fileName");
-            assert.strictEqual(encodingType, "utf-8");
-            callBack(undefined, content);
-            readerCalledCount += 1;
-        };
+    const show = function (sortOutput) {
+      assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
+      assert.strictEqual(sortOutput.errorMessage, undefined);
+      showCalledCount++;
+    };
 
-        const userInputs = ["fileName"];
-        sort(userInputs, { readFile: reader }, undefined, show);
+    const reader = function (file, encodingType, callBack) {
+      assert.strictEqual(file, 'fileName');
+      assert.strictEqual(encodingType, 'utf-8');
+      callBack(undefined, content);
+      readerCalledCount++;
+    };
 
-        assert.strictEqual(readerCalledCount, 1);
-        assert.strictEqual(showCalledCount, 1);
-    });
+    const userInputs = ['fileName'];
+    sort(userInputs, { readFile: reader }, undefined, show);
 
-    it("should sort if file is not given", function() {
-        let showCalledCount = 0;
-        let content = "lvaiju hellow h\naaquib\n12\nzahid khan\n zd";
-        const expectedSortedContent = " zd\n12\naaquib\nlvaiju hellow h\nzahid khan";
+    assert.strictEqual(readerCalledCount, calledCount);
+    assert.strictEqual(showCalledCount, calledCount);
+  });
 
-        const show = function(sortOutput) {
-            assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
-            assert.strictEqual(sortOutput.errorMessage, undefined);
-            showCalledCount += 1;
-        };
+  it('should sort if file is not given', function () {
+    let showCalledCount = 0;
+    const content = 'lvaiju hellow h\naaquib\n12\nzahid khan\n zd';
+    const expectedSortedContent =
+      ' zd\n12\naaquib\nlvaiju hellow h\nzahid khan';
 
-        const eventEmitter = new EventEmitter();
-        const userInputs = [];
-        sort(userInputs, undefined, eventEmitter, show);
-        eventEmitter.emit("data", content);
-        eventEmitter.emit("end");
+    const show = function (sortOutput) {
+      assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
+      assert.strictEqual(sortOutput.errorMessage, undefined);
+      showCalledCount++;
+    };
 
-        assert.strictEqual(showCalledCount, 1);
-    });
+    const eventEmitter = new EventEmitter();
+    const userInputs = [];
+    sort(userInputs, undefined, eventEmitter, show);
+    eventEmitter.emit('data', content);
+    eventEmitter.emit('end');
+
+    assert.strictEqual(showCalledCount, calledCount);
+  });
 });
