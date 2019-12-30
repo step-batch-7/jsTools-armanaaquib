@@ -62,9 +62,9 @@ describe('#sort()', function () {
   it('should give sorted content if content is given', function () {
     let showCalledCount = 0;
     let readerCalledCount = 0;
-    const content = 'lvaiju hellow h\naaquib\n12\nzahid khan\n zd';
+    const content = 'limvaishu hellow h\naaquib\n12\nzahid khan\n zd';
     const expectedSortedContent =
-      ' zd\n12\naaquib\nlvaiju hellow h\nzahid khan';
+      ' zd\n12\naaquib\nlimvaishu hellow h\nzahid khan';
 
     const show = function (sortOutput) {
       assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
@@ -114,9 +114,9 @@ describe('#sort()', function () {
 
   it('should sort if file is not given', function () {
     let showCalledCount = 0;
-    const content = 'lvaiju hellow h\naaquib\n12\nzahid khan\n zd';
+    const content = 'laishaqui hellow h\naaquib\n12\nzahid khan\n zd';
     const expectedSortedContent =
-      ' zd\n12\naaquib\nlvaiju hellow h\nzahid khan';
+      ' zd\n12\naaquib\nlaishaqui hellow h\nzahid khan';
 
     const show = function (sortOutput) {
       assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);

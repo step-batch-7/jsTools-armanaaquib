@@ -8,7 +8,7 @@
     },
     "scripts": {
         "test": "mocha",
-        "allTests": "nyc mocha; zsh runAppTests.sh appTests/*.test"
+        "allTests": "nyc mocha; zsh runAppTests.sh appTests/*.test; eslint src test"
     },
     "devDependencies": {
         "chai": "4.2.0",
