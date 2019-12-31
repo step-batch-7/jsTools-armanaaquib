@@ -14,34 +14,36 @@ const errors = {
   EACCES: 'sort: Permission denied'
 };
 
-const onCompletion = function (error, content) {
-  if (error) {
+const sortStreamData = function (inputStream, show) {
+  let content = '';
+
+  inputStream.on('error', error => {
     let errorMessage = errors[error.code];
     if (!errorMessage) { errorMessage = 'sort: file access got fail'; }
 
-    this.show({ errorMessage });
-    return;
-  }
+    show({ errorMessage });
+  });
 
-  const sortedContent = getSortedContent(content);
-  this.show({ sortedContent });
-};
-
-const applyFileSorting = function (options, reader, show) {
-  const { file } = options;
-  reader(file, 'utf-8', onCompletion.bind({ show }));
-};
-
-const applyStdInSorting = function (stdin, show) {
-  let content = '';
-  stdin.on('data', chunk => {
+  inputStream.on('data', chunk => {
     content += chunk;
   });
 
-  stdin.on('end', () => {
+  inputStream.on('end', () => {
     const sortedContent = getSortedContent(content);
     show({ sortedContent });
   });
+};
+
+const fileSorting = function (options, createReadStream, show) {
+  const { file } = options;
+  const inputStream = createReadStream(file);
+
+  sortStreamData(inputStream, show);
+};
+
+const stdinSorting = function (stdin, show) {
+  stdin.setEncoding('utf8');
+  sortStreamData(stdin, show);
 };
 
 const parseSortProperties = function (userInputs) {
@@ -54,17 +56,14 @@ const parseSortProperties = function (userInputs) {
   return { file: userInputs[firstFileIndex] };
 };
 
-const sort = function (userInputs, fs, stdin, show) {
+const sort = function (userInputs, createReadStream, stdin, show) {
   const options = parseSortProperties(userInputs);
 
   if (options.file) {
-    const reader = fs.readFile;
-    applyFileSorting(options, reader, show);
-    return;
+    fileSorting(options, createReadStream, show);
+  } else {
+    stdinSorting(stdin, show);
   }
-
-  applyStdInSorting(stdin, show);
 };
 
 module.exports = { sort };
-
