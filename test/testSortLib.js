@@ -25,7 +25,7 @@ describe('#sort()', function () {
     };
 
     const userInputs = ['fileName'];
-    sort(userInputs, createReadStream, undefined, show);
+    sort(userInputs, { createReadStream, stdin: undefined }, show);
 
     assert.equal(on.firstCall.args[startIndex], 'error');
     on.firstCall.args[secondIndex]({ code: 'ENOENT' });
@@ -49,7 +49,7 @@ describe('#sort()', function () {
     };
 
     const userInputs = ['fileName'];
-    sort(userInputs, createReadStream, undefined, show);
+    sort(userInputs, { createReadStream, undefined }, show);
 
     assert.equal(on.firstCall.args[startIndex], 'error');
     on.firstCall.args[secondIndex]({ code: 'random' });
@@ -78,7 +78,7 @@ describe('#sort()', function () {
       };
 
       const userInputs = ['fileName'];
-      sort(userInputs, createReadStream, undefined, show);
+      sort(userInputs, { createReadStream, stdin: undefined }, show);
 
       assert.equal(on.firstCall.args[startIndex], 'error');
 
@@ -114,7 +114,7 @@ describe('#sort()', function () {
 
     const startAsserting = function () {
       const userInputs = ['fileName'];
-      sort(userInputs, createReadStream, undefined, show);
+      sort(userInputs, { createReadStream, stdin: undefined }, show);
 
       assert.equal(on.firstCall.args[startIndex], 'error');
 
@@ -149,7 +149,7 @@ describe('#sort()', function () {
 
     const startAsserting = function () {
       const userInputs = [];
-      sort(userInputs, undefined, stdin, show);
+      sort(userInputs, { createReadStream: undefined, stdin }, show);
 
       assert.equal(on.firstCall.args[startIndex], 'error');
 

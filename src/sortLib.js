@@ -56,7 +56,7 @@ const parseSortProperties = function (userInputs) {
   return { file: userInputs[firstFileIndex] };
 };
 
-const sort = function (userInputs, createReadStream, stdin, show) {
+const sort = function (userInputs, { createReadStream, stdin }, show) {
   const options = parseSortProperties(userInputs);
 
   if (options.file) {
