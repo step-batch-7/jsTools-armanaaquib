@@ -2,13 +2,13 @@ const { createReadStream } = require('fs');
 const { stdout, stderr } = process;
 const { sort } = require('./src/sortLib');
 
-const show = function (sortOutput) {
-  if (sortOutput.sortedContent) {
-    stdout.write(`${sortOutput.sortedContent}\n`);
-  } else {
-    stderr.write(`${sortOutput.errorMessage}\n`);
+const show = function (error, output) {
+  if (error) {
+    stderr.write(`${error}\n`);
     process.exit = 2;
+    return;
   }
+  stdout.write(`${output}\n`);
 };
 
 const main = function () {

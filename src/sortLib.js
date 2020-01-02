@@ -17,11 +17,11 @@ const errors = {
 const sortStreamData = function (inputStream, show) {
   let content = '';
 
-  inputStream.on('error', error => {
-    let errorMessage = errors[error.code];
-    if (!errorMessage) { errorMessage = 'sort: file access got fail'; }
+  inputStream.on('error', errorDetail => {
+    let error = errors[errorDetail.code];
+    if (!error) { error = 'sort: file access got fail'; }
 
-    show({ errorMessage });
+    show(error);
   });
 
   inputStream.on('data', chunk => {
@@ -30,7 +30,7 @@ const sortStreamData = function (inputStream, show) {
 
   inputStream.on('end', () => {
     const sortedContent = getSortedContent(content);
-    show({ sortedContent });
+    show(undefined, sortedContent);
   });
 };
 
@@ -47,8 +47,8 @@ const stdinSorting = function (stdin, show) {
 };
 
 const parseSortProperties = function (userInputs) {
-  const empty = 0;
-  if (userInputs.length === empty) {
+  const emptyLength = 0;
+  if (userInputs.length === emptyLength) {
     return { file: undefined };
   }
 
@@ -64,6 +64,7 @@ const sort = function (userInputs, createReadStream, stdin, show) {
   } else {
     stdinSorting(stdin, show);
   }
+
 };
 
 module.exports = { sort };

@@ -13,12 +13,9 @@ describe('#sort()', function () {
     let showCalledCount = 0;
     const on = sinon.fake();
 
-    const show = function (sortOutput) {
-      assert.strictEqual(sortOutput.sortedContent, undefined);
-      assert.strictEqual(
-        sortOutput.errorMessage,
-        'sort: No such file or directory'
-      );
+    const show = function (error, output) {
+      assert.strictEqual(error, 'sort: No such file or directory');
+      assert.strictEqual(output, undefined);
       showCalledCount++;
     };
 
@@ -40,9 +37,9 @@ describe('#sort()', function () {
     let showCalledCount = 0;
     const on = sinon.fake();
 
-    const show = function (sortOutput) {
-      assert.strictEqual(sortOutput.sortedContent, undefined);
-      assert.strictEqual(sortOutput.errorMessage, 'sort: file access got fail');
+    const show = function (error, output) {
+      assert.strictEqual(error, 'sort: file access got fail');
+      assert.strictEqual(output, undefined);
       showCalledCount++;
     };
 
@@ -60,7 +57,6 @@ describe('#sort()', function () {
     assert.strictEqual(showCalledCount, calledCount);
   });
 
-  /*eslint-disable max-statements*/
   it('should give sorted content if content is given', function () {
     let showCalledCount = 0;
     const on = sinon.fake();
@@ -69,29 +65,33 @@ describe('#sort()', function () {
     const expectedSortedContent =
       ' zd\n12\naaquib\nlion hellow h\nzahid khan';
 
-    const show = function (sortOutput) {
-      assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
-      assert.strictEqual(sortOutput.errorMessage, undefined);
+    const show = function (error, output) {
+      assert.strictEqual(error, undefined);
+      assert.strictEqual(output, expectedSortedContent);
       showCalledCount++;
     };
 
-    const createReadStream = function (file) {
-      assert.strictEqual(file, 'fileName');
-      return { on };
+    const startAsserting = function () {
+      const createReadStream = function (file) {
+        assert.strictEqual(file, 'fileName');
+        return { on };
+      };
+
+      const userInputs = ['fileName'];
+      sort(userInputs, createReadStream, undefined, show);
+
+      assert.equal(on.firstCall.args[startIndex], 'error');
+
+      assert.equal(on.secondCall.args[startIndex], 'data');
+      on.secondCall.args[secondIndex](content);
+
+      assert.equal(on.thirdCall.args[startIndex], 'end');
+      on.thirdCall.args[secondIndex]();
+
+      assert.strictEqual(showCalledCount, calledCount);
     };
 
-    const userInputs = ['fileName'];
-    sort(userInputs, createReadStream, undefined, show);
-
-    assert.equal(on.firstCall.args[startIndex], 'error');
-
-    assert.equal(on.secondCall.args[startIndex], 'data');
-    on.secondCall.args[secondIndex](content);
-
-    assert.equal(on.thirdCall.args[startIndex], 'end');
-    on.thirdCall.args[secondIndex]();
-
-    assert.strictEqual(showCalledCount, calledCount);
+    startAsserting();
   });
 
   it('should give empty if content is empty', function () {
@@ -101,9 +101,9 @@ describe('#sort()', function () {
     const content = '';
     const expectedSortedContent = '';
 
-    const show = function (sortOutput) {
-      assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
-      assert.strictEqual(sortOutput.errorMessage, undefined);
+    const show = function (error, output) {
+      assert.strictEqual(error, undefined);
+      assert.strictEqual(output, expectedSortedContent);
       showCalledCount++;
     };
 
@@ -112,19 +112,22 @@ describe('#sort()', function () {
       return { on };
     };
 
-    const userInputs = ['fileName'];
-    sort(userInputs, createReadStream, undefined, show);
+    const startAsserting = function () {
+      const userInputs = ['fileName'];
+      sort(userInputs, createReadStream, undefined, show);
 
-    assert.equal(on.firstCall.args[startIndex], 'error');
+      assert.equal(on.firstCall.args[startIndex], 'error');
 
-    assert.equal(on.secondCall.args[startIndex], 'data');
-    on.secondCall.args[secondIndex](content);
+      assert.equal(on.secondCall.args[startIndex], 'data');
+      on.secondCall.args[secondIndex](content);
 
-    assert.equal(on.thirdCall.args[startIndex], 'end');
-    on.thirdCall.args[secondIndex]();
+      assert.equal(on.thirdCall.args[startIndex], 'end');
+      on.thirdCall.args[secondIndex]();
 
-    assert.strictEqual(showCalledCount, calledCount);
+      assert.strictEqual(showCalledCount, calledCount);
+    };
 
+    startAsserting();
   });
 
   it('should sort stdin content if file is not given', function () {
@@ -136,26 +139,30 @@ describe('#sort()', function () {
     const expectedSortedContent =
       ' zd\n12\naaquib\nlion hellow h\nzahid khan';
 
-    const show = function (sortOutput) {
-      assert.strictEqual(sortOutput.sortedContent, expectedSortedContent);
-      assert.strictEqual(sortOutput.errorMessage, undefined);
+    const show = function (error, output) {
+      assert.strictEqual(error, undefined);
+      assert.strictEqual(output, expectedSortedContent);
       showCalledCount++;
     };
 
     const stdin = { setEncoding, on };
 
-    const userInputs = [];
-    sort(userInputs, undefined, stdin, show);
+    const startAsserting = function () {
+      const userInputs = [];
+      sort(userInputs, undefined, stdin, show);
 
-    assert.equal(on.firstCall.args[startIndex], 'error');
+      assert.equal(on.firstCall.args[startIndex], 'error');
 
-    assert.equal(on.secondCall.args[startIndex], 'data');
-    on.secondCall.args[secondIndex](content);
+      assert.equal(on.secondCall.args[startIndex], 'data');
+      on.secondCall.args[secondIndex](content);
 
-    assert.equal(on.thirdCall.args[startIndex], 'end');
-    on.thirdCall.args[secondIndex]();
+      assert.equal(on.thirdCall.args[startIndex], 'end');
+      on.thirdCall.args[secondIndex]();
 
-    assert.strictEqual(showCalledCount, calledCount);
+      assert.strictEqual(showCalledCount, calledCount);
+    };
+
+    startAsserting();
   });
 
 });
