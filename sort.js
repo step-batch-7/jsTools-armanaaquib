@@ -15,7 +15,7 @@ const main = function () {
   const usrArgStartIndex = 2;
   const userInputs = process.argv.slice(usrArgStartIndex);
 
-  sort(userInputs, { createReadStream, stdin }, show);
+  sort(userInputs, createReadStream, stdin, show);
 };
 
 main();

@@ -1,5 +1,5 @@
 const assert = require('chai').assert;
-const { sort } = require('../src/sortLib');
+const {sort} = require('../src/sortLib');
 const sinon = require('sinon');
 
 describe('#sort()', function () {
@@ -21,14 +21,14 @@ describe('#sort()', function () {
 
     const createReadStream = function (file) {
       assert.strictEqual(file, 'fileName');
-      return { on };
+      return {on};
     };
 
     const userInputs = ['fileName'];
-    sort(userInputs, { createReadStream, stdin: undefined }, show);
+    sort(userInputs, createReadStream, undefined, show);
 
     assert.equal(on.firstCall.args[startIndex], 'error');
-    on.firstCall.args[secondIndex]({ code: 'ENOENT' });
+    on.firstCall.args[secondIndex]({code: 'ENOENT'});
 
     assert.strictEqual(showCalledCount, calledCount);
   });
@@ -45,14 +45,14 @@ describe('#sort()', function () {
 
     const createReadStream = function (file) {
       assert.strictEqual(file, 'fileName');
-      return { on };
+      return {on};
     };
 
     const userInputs = ['fileName'];
-    sort(userInputs, { createReadStream, undefined }, show);
+    sort(userInputs, createReadStream, undefined, show);
 
     assert.equal(on.firstCall.args[startIndex], 'error');
-    on.firstCall.args[secondIndex]({ code: 'random' });
+    on.firstCall.args[secondIndex]({code: 'random'});
 
     assert.strictEqual(showCalledCount, calledCount);
   });
@@ -74,11 +74,11 @@ describe('#sort()', function () {
     const startAsserting = function () {
       const createReadStream = function (file) {
         assert.strictEqual(file, 'fileName');
-        return { on };
+        return {on};
       };
 
       const userInputs = ['fileName'];
-      sort(userInputs, { createReadStream, stdin: undefined }, show);
+      sort(userInputs, createReadStream, undefined, show);
 
       assert.equal(on.firstCall.args[startIndex], 'error');
 
@@ -109,25 +109,21 @@ describe('#sort()', function () {
 
     const createReadStream = function (file) {
       assert.strictEqual(file, 'fileName');
-      return { on };
+      return {on};
     };
 
-    const startAsserting = function () {
-      const userInputs = ['fileName'];
-      sort(userInputs, { createReadStream, stdin: undefined }, show);
+    const userInputs = ['fileName'];
+    sort(userInputs, createReadStream, undefined, show);
 
-      assert.equal(on.firstCall.args[startIndex], 'error');
+    assert.equal(on.firstCall.args[startIndex], 'error');
 
-      assert.equal(on.secondCall.args[startIndex], 'data');
-      on.secondCall.args[secondIndex](content);
+    assert.equal(on.secondCall.args[startIndex], 'data');
+    on.secondCall.args[secondIndex](content);
 
-      assert.equal(on.thirdCall.args[startIndex], 'end');
-      on.thirdCall.args[secondIndex]();
+    assert.equal(on.thirdCall.args[startIndex], 'end');
+    on.thirdCall.args[secondIndex]();
 
-      assert.strictEqual(showCalledCount, calledCount);
-    };
-
-    startAsserting();
+    assert.strictEqual(showCalledCount, calledCount);
   });
 
   it('should sort stdin content if file is not given', function () {
@@ -145,24 +141,20 @@ describe('#sort()', function () {
       showCalledCount++;
     };
 
-    const stdin = { setEncoding, on };
+    const stdin = {setEncoding, on};
 
-    const startAsserting = function () {
-      const userInputs = [];
-      sort(userInputs, { createReadStream: undefined, stdin }, show);
+    const userInputs = [];
+    sort(userInputs, undefined, stdin, show);
 
-      assert.equal(on.firstCall.args[startIndex], 'error');
+    assert.equal(on.firstCall.args[startIndex], 'error');
 
-      assert.equal(on.secondCall.args[startIndex], 'data');
-      on.secondCall.args[secondIndex](content);
+    assert.equal(on.secondCall.args[startIndex], 'data');
+    on.secondCall.args[secondIndex](content);
 
-      assert.equal(on.thirdCall.args[startIndex], 'end');
-      on.thirdCall.args[secondIndex]();
+    assert.equal(on.thirdCall.args[startIndex], 'end');
+    on.thirdCall.args[secondIndex]();
 
-      assert.strictEqual(showCalledCount, calledCount);
-    };
-
-    startAsserting();
+    assert.strictEqual(showCalledCount, calledCount);
   });
 
 });

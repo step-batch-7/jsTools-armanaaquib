@@ -19,7 +19,9 @@ const sortStreamData = function (inputStream, show) {
 
   inputStream.on('error', errorDetail => {
     let error = errors[errorDetail.code];
-    if (!error) { error = 'sort: file access got fail'; }
+    if (!error) {
+      error = 'sort: file access got fail'; 
+    }
 
     show(error);
   });
@@ -35,10 +37,10 @@ const sortStreamData = function (inputStream, show) {
 };
 
 const fileSorting = function (options, createReadStream, show) {
-  const { file } = options;
-  const inputStream = createReadStream(file);
+  const {file} = options;
+  const readStream = createReadStream(file);
 
-  sortStreamData(inputStream, show);
+  sortStreamData(readStream, show);
 };
 
 const stdinSorting = function (stdin, show) {
@@ -49,14 +51,14 @@ const stdinSorting = function (stdin, show) {
 const parseSortProperties = function (userInputs) {
   const emptyLength = 0;
   if (userInputs.length === emptyLength) {
-    return { file: undefined };
+    return {file: undefined};
   }
 
   const firstFileIndex = 0;
-  return { file: userInputs[firstFileIndex] };
+  return {file: userInputs[firstFileIndex]};
 };
 
-const sort = function (userInputs, { createReadStream, stdin }, show) {
+const sort = function (userInputs, createReadStream, stdin, show) {
   const options = parseSortProperties(userInputs);
 
   if (options.file) {
@@ -67,4 +69,4 @@ const sort = function (userInputs, { createReadStream, stdin }, show) {
 
 };
 
-module.exports = { sort };
+module.exports = {sort};
