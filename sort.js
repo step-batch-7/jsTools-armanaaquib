@@ -1,6 +1,8 @@
-const { createReadStream } = require('fs');
-const { stdout, stderr, stdin } = process;
-const { sort } = require('./src/sortLib');
+const {stdout, stderr, stdin} = process;
+const {createReadStream} = require('fs');
+
+const {sort} = require('./src/sortLib');
+const StreamPicker = require('./src/streamPicker');
 
 const show = function (error, output) {
   if (error) {
@@ -14,8 +16,9 @@ const show = function (error, output) {
 const main = function () {
   const usrArgStartIndex = 2;
   const userInputs = process.argv.slice(usrArgStartIndex);
+  const streamPicker = new StreamPicker(createReadStream, stdin);
 
-  sort(userInputs, createReadStream, stdin, show);
+  sort(userInputs, streamPicker, show);
 };
 
 main();

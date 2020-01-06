@@ -3,16 +3,29 @@ const {sort} = require('../src/sortLib');
 const sinon = require('sinon');
 
 describe('#sort()', function () {
-  const calledCount = 1;
-  const startIndex = 0;
-  const secondIndex = 1;
+  let calledCount;
+  let startIndex;
+  let secondIndex;
+  before(function () {
+    calledCount = 1;
+    startIndex = 0;
+    secondIndex = 1;
+  });
+
+  let showCalledCount;
+  let on;
+  let pick;
+  let streamPicker;
+  beforeEach(function () {
+    showCalledCount = 0;
+    on = sinon.fake();
+    pick = sinon.stub();
+    streamPicker = {pick};
+  });
 
   const testMessage =
     'should give error message if given error code for file not available';
   it(testMessage, function () {
-    let showCalledCount = 0;
-    const on = sinon.fake();
-
     const show = function (error, output) {
       assert.strictEqual(error, 'sort: No such file or directory');
       assert.strictEqual(output, undefined);
@@ -24,8 +37,10 @@ describe('#sort()', function () {
       return {on};
     };
 
+    pick.withArgs('fileName').returns(createReadStream('fileName'));
+
     const userInputs = ['fileName'];
-    sort(userInputs, createReadStream, undefined, show);
+    sort(userInputs, streamPicker, show);
 
     assert.equal(on.firstCall.args[startIndex], 'error');
     on.firstCall.args[secondIndex]({code: 'ENOENT'});
@@ -34,9 +49,6 @@ describe('#sort()', function () {
   });
 
   it('should give error message if random error code is given', function () {
-    let showCalledCount = 0;
-    const on = sinon.fake();
-
     const show = function (error, output) {
       assert.strictEqual(error, 'sort: file access got fail');
       assert.strictEqual(output, undefined);
@@ -48,8 +60,10 @@ describe('#sort()', function () {
       return {on};
     };
 
+    pick.withArgs('fileName').returns(createReadStream('fileName'));
+
     const userInputs = ['fileName'];
-    sort(userInputs, createReadStream, undefined, show);
+    sort(userInputs, streamPicker, show);
 
     assert.equal(on.firstCall.args[startIndex], 'error');
     on.firstCall.args[secondIndex]({code: 'random'});
@@ -58,9 +72,6 @@ describe('#sort()', function () {
   });
 
   it('should give sorted content if content is given', function () {
-    let showCalledCount = 0;
-    const on = sinon.fake();
-
     const content = 'lion hellow h\naaquib\n12\nzahid khan\n zd';
     const expectedSortedContent =
       ' zd\n12\naaquib\nlion hellow h\nzahid khan';
@@ -71,33 +82,29 @@ describe('#sort()', function () {
       showCalledCount++;
     };
 
-    const startAsserting = function () {
-      const createReadStream = function (file) {
-        assert.strictEqual(file, 'fileName');
-        return {on};
-      };
-
-      const userInputs = ['fileName'];
-      sort(userInputs, createReadStream, undefined, show);
-
-      assert.equal(on.firstCall.args[startIndex], 'error');
-
-      assert.equal(on.secondCall.args[startIndex], 'data');
-      on.secondCall.args[secondIndex](content);
-
-      assert.equal(on.thirdCall.args[startIndex], 'end');
-      on.thirdCall.args[secondIndex]();
-
-      assert.strictEqual(showCalledCount, calledCount);
+    const createReadStream = function (file) {
+      assert.strictEqual(file, 'fileName');
+      return {on};
     };
 
-    startAsserting();
+    pick.withArgs('fileName').returns(createReadStream('fileName'));
+
+    const userInputs = ['fileName'];
+    sort(userInputs, streamPicker, show);
+
+    assert.equal(on.firstCall.args[startIndex], 'error');
+
+    assert.equal(on.secondCall.args[startIndex], 'data');
+    on.secondCall.args[secondIndex](content);
+
+    assert.equal(on.thirdCall.args[startIndex], 'end');
+    on.thirdCall.args[secondIndex]();
+
+    assert.strictEqual(showCalledCount, calledCount);
+
   });
 
   it('should give empty if content is empty', function () {
-    let showCalledCount = 0;
-    const on = sinon.fake();
-
     const content = '';
     const expectedSortedContent = '';
 
@@ -112,8 +119,10 @@ describe('#sort()', function () {
       return {on};
     };
 
+    pick.withArgs('fileName').returns(createReadStream('fileName'));
+
     const userInputs = ['fileName'];
-    sort(userInputs, createReadStream, undefined, show);
+    sort(userInputs, streamPicker, show);
 
     assert.equal(on.firstCall.args[startIndex], 'error');
 
@@ -126,10 +135,8 @@ describe('#sort()', function () {
     assert.strictEqual(showCalledCount, calledCount);
   });
 
-  it('should sort stdin content if file is not given', function () {
-    let showCalledCount = 0;
+  it('should sort stdin content if file is not given', function (done) {
     const setEncoding = sinon.fake();
-    const on = sinon.fake();
 
     const content = 'lion hellow h\naaquib\n12\nzahid khan\n zd';
     const expectedSortedContent =
@@ -139,12 +146,14 @@ describe('#sort()', function () {
       assert.strictEqual(error, undefined);
       assert.strictEqual(output, expectedSortedContent);
       showCalledCount++;
+      done();
     };
 
     const stdin = {setEncoding, on};
+    pick.withArgs().returns(stdin);
 
     const userInputs = [];
-    sort(userInputs, undefined, stdin, show);
+    sort(userInputs, streamPicker, show);
 
     assert.equal(on.firstCall.args[startIndex], 'error');
 
@@ -153,8 +162,6 @@ describe('#sort()', function () {
 
     assert.equal(on.thirdCall.args[startIndex], 'end');
     on.thirdCall.args[secondIndex]();
-
-    assert.strictEqual(showCalledCount, calledCount);
   });
 
 });

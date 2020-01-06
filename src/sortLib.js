@@ -20,7 +20,7 @@ const sortStreamData = function (inputStream, show) {
   inputStream.on('error', errorDetail => {
     let error = errors[errorDetail.code];
     if (!error) {
-      error = 'sort: file access got fail'; 
+      error = 'sort: file access got fail';
     }
 
     show(error);
@@ -36,18 +36,6 @@ const sortStreamData = function (inputStream, show) {
   });
 };
 
-const fileSorting = function (options, createReadStream, show) {
-  const {file} = options;
-  const readStream = createReadStream(file);
-
-  sortStreamData(readStream, show);
-};
-
-const stdinSorting = function (stdin, show) {
-  stdin.setEncoding('utf8');
-  sortStreamData(stdin, show);
-};
-
 const parseSortProperties = function (userInputs) {
   const emptyLength = 0;
   if (userInputs.length === emptyLength) {
@@ -58,15 +46,11 @@ const parseSortProperties = function (userInputs) {
   return {file: userInputs[firstFileIndex]};
 };
 
-const sort = function (userInputs, createReadStream, stdin, show) {
+const sort = function (userInputs, streamPicker, show) {
   const options = parseSortProperties(userInputs);
+  const readableStream = streamPicker.pick(options.file);
 
-  if (options.file) {
-    fileSorting(options, createReadStream, show);
-  } else {
-    stdinSorting(stdin, show);
-  }
-
+  sortStreamData(readableStream, show);
 };
 
 module.exports = {sort};
