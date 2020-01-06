@@ -14,7 +14,7 @@ const errors = {
   EACCES: 'sort: Permission denied'
 };
 
-const sortStreamData = function (inputStream, show) {
+const sortStreamData = function (inputStream, onCompletion) {
   let content = '';
 
   inputStream.on('error', errorDetail => {
@@ -23,7 +23,7 @@ const sortStreamData = function (inputStream, show) {
       error = 'sort: file access got fail';
     }
 
-    show(error);
+    onCompletion(error);
   });
 
   inputStream.on('data', chunk => {
@@ -31,8 +31,7 @@ const sortStreamData = function (inputStream, show) {
   });
 
   inputStream.on('end', () => {
-    const sortedContent = getSortedContent(content);
-    show(undefined, sortedContent);
+    onCompletion(undefined, content);
   });
 };
 
@@ -50,7 +49,17 @@ const sort = function (userInputs, streamPicker, show) {
   const options = parseSortProperties(userInputs);
   const readableStream = streamPicker.pick(options.file);
 
-  sortStreamData(readableStream, show);
+  const onCompletion = (error, content) => {
+    let sortedContent = undefined;
+
+    if (!error) {
+      sortedContent = getSortedContent(content);
+    }
+
+    show(error, sortedContent);
+  };
+
+  sortStreamData(readableStream, onCompletion);
 };
 
 module.exports = {sort};
