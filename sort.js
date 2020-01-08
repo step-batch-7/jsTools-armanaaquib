@@ -1,7 +1,7 @@
 const {stdout, stderr, stdin} = process;
 const {createReadStream} = require('fs');
 
-const parse = require('./src/parse');
+const parseOptions = require('./src/parseOptions');
 const StreamPicker = require('./src/streamPicker');
 const Sort = require('./src/Sort');
 
@@ -19,7 +19,7 @@ const main = function () {
   const userInputs = process.argv.slice(usrArgStartIndex);
 
   const streamPicker = new StreamPicker(createReadStream, stdin);
-  const options = parse(userInputs);
+  const options = parseOptions(userInputs);
 
   const sort = new Sort(options, streamPicker);
   sort.perform(showOutput);
