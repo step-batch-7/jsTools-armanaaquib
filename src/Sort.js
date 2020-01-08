@@ -35,31 +35,27 @@ const sortStreamData = function (inputStream, onCompletion) {
   });
 };
 
-const parseSortProperties = function (userInputs) {
-  const emptyLength = 0;
-  if (userInputs.length === emptyLength) {
-    return {file: undefined};
+class Sort {
+  constructor (options, streamPicker) {
+    this.options = options;
+    this.streamPicker = streamPicker;
   }
 
-  const firstFileIndex = 0;
-  return {file: userInputs[firstFileIndex]};
-};
+  perform(showOutput) {
+    const readableStream = this.streamPicker.pick(this.options.file);
 
-const sort = function (userInputs, streamPicker, show) {
-  const options = parseSortProperties(userInputs);
-  const readableStream = streamPicker.pick(options.file);
+    const onCompletion = (error, content) => {
+      let sortedContent = undefined;
 
-  const onCompletion = (error, content) => {
-    let sortedContent = undefined;
+      if (!error) {
+        sortedContent = getSortedContent(content);
+      }
 
-    if (!error) {
-      sortedContent = getSortedContent(content);
-    }
+      showOutput(error, sortedContent);
+    };
 
-    show(error, sortedContent);
-  };
+    sortStreamData(readableStream, onCompletion);
+  }
+}
 
-  sortStreamData(readableStream, onCompletion);
-};
-
-module.exports = {sort};
+module.exports = Sort;

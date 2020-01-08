@@ -1,10 +1,11 @@
 const {stdout, stderr, stdin} = process;
 const {createReadStream} = require('fs');
 
-const {sort} = require('./src/sortLib');
+const parse = require('./src/parse');
 const StreamPicker = require('./src/streamPicker');
+const Sort = require('./src/Sort');
 
-const show = function (error, output) {
+const showOutput = function (error, output) {
   if (error) {
     stderr.write(`${error}\n`);
     process.exit = 2;
@@ -16,9 +17,12 @@ const show = function (error, output) {
 const main = function () {
   const usrArgStartIndex = 2;
   const userInputs = process.argv.slice(usrArgStartIndex);
-  const streamPicker = new StreamPicker(createReadStream, stdin);
 
-  sort(userInputs, streamPicker, show);
+  const streamPicker = new StreamPicker(createReadStream, stdin);
+  const options = parse(userInputs);
+
+  const sort = new Sort(options, streamPicker);
+  sort.perform(showOutput);
 };
 
 main();
