@@ -42,7 +42,7 @@ class Sort {
   }
 
   perform(showOutput) {
-    const readableStream = this.streamPicker.pick(this.options.file);
+    const readableStream = this.streamPicker.pick(this.options.fileName);
 
     const onCompletion = (error, content) => {
       let sortedContent = undefined;

@@ -41,7 +41,7 @@ describe('#Sort', function () {
 
       pick.withArgs('fileName').returns(createReadStream('fileName'));
 
-      const options = {file: 'fileName'};
+      const options = {fileName: 'fileName'};
       const sort = new Sort(options, streamPicker);
       sort.perform(show);
 
@@ -65,7 +65,7 @@ describe('#Sort', function () {
 
       pick.withArgs('fileName').returns(createReadStream('fileName'));
 
-      const options = {file: 'fileName'};
+      const options = {fileName: 'fileName'};
       const sort = new Sort(options, streamPicker);
       sort.perform(show);
 
@@ -93,7 +93,7 @@ describe('#Sort', function () {
 
       pick.withArgs('fileName').returns(createReadStream('fileName'));
 
-      const options = {file: 'fileName'};
+      const options = {fileName: 'fileName'};
       const sort = new Sort(options, streamPicker);
       sort.perform(show);
 
@@ -126,7 +126,7 @@ describe('#Sort', function () {
 
       pick.withArgs('fileName').returns(createReadStream('fileName'));
 
-      const options = {file: 'fileName'};
+      const options = {fileName: 'fileName'};
       const sort = new Sort(options, streamPicker);
       sort.perform(show);
 

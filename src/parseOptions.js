@@ -1,4 +1,4 @@
-const parse = function (userInputs) {
+const parseOptions = function (userInputs) {
   const emptyLength = 0;
 
   if (userInputs.length === emptyLength) {
@@ -6,7 +6,7 @@ const parse = function (userInputs) {
   }
 
   const firstFileIndex = 0;
-  return {file: userInputs[firstFileIndex]};
+  return {fileName: userInputs[firstFileIndex]};
 };
 
-module.exports = parse;
+module.exports = parseOptions;
